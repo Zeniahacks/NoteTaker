@@ -1,22 +1,30 @@
 package sg.edu.rp.c346.id19023702.notetaker;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class DetailActivity extends AppCompatActivity {
 
-    private Note selectedNote;
-    private EditText editTextTitle, editTextDescription;
-    private Button buttonDelete, buttonSave;
+    Note selectedNote;
+    EditText editTextTitle, editTextDescription;
+    Button buttonDelete, buttonSave, buttonAlarm;
+    TextView tvTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +39,8 @@ public class DetailActivity extends AppCompatActivity {
         selectedNote = new Note(
                 intent.getLongExtra(MainActivity.INTENT_EXTRA_KEY, -1),
                 intent.getStringExtra(MainActivity.INTENT_EXTRA_TITLE),
-                intent.getStringExtra(MainActivity.INTENT_EXTRA_DESCRIPTION)
+                intent.getStringExtra(MainActivity.INTENT_EXTRA_DESCRIPTION),
+                intent.getStringExtra(MainActivity.INTENT_EXTRA_TIME)
         );
 
         // Initialize layout elements.
@@ -39,6 +48,8 @@ public class DetailActivity extends AppCompatActivity {
         editTextDescription = findViewById(R.id.edit_text_description);
         buttonDelete = findViewById(R.id.button_delete_note);
         buttonSave = findViewById(R.id.button_save_note);
+        buttonAlarm = findViewById(R.id.button_alarm);
+        tvTime = findViewById(R.id.text_view_time);
 
         // Set text as attributes of the selected note object.
         editTextTitle.setText(selectedNote.getTitle());
@@ -66,6 +77,7 @@ public class DetailActivity extends AppCompatActivity {
                     intent.putExtra(MainActivity.INTENT_EXTRA_KEY, selectedNote.getKey());
                     intent.putExtra(MainActivity.INTENT_EXTRA_TITLE, editTextTitle.getText().toString());
                     intent.putExtra(MainActivity.INTENT_EXTRA_DESCRIPTION, editTextDescription.getText().toString());
+                    intent.putExtra(MainActivity.INTENT_EXTRA_TIME, buttonAlarm.getText().toString());
                     setResult(MainActivity.RESULT_SAVE_NOTE, intent);
                     finish();
                     Toast.makeText(getApplicationContext(),
@@ -74,6 +86,40 @@ public class DetailActivity extends AppCompatActivity {
                             .show();
                     clearAllFields();
                 }
+            }
+        });
+
+        final Calendar newCalender = Calendar.getInstance();
+        buttonAlarm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatePickerDialog dialog = new DatePickerDialog(DetailActivity.this, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, final int year, final int month, final int dayOfMonth) {
+
+                        final Calendar newDate = Calendar.getInstance();
+                        Calendar newTime = Calendar.getInstance();
+                        TimePickerDialog time = new TimePickerDialog(DetailActivity.this, new TimePickerDialog.OnTimeSetListener() {
+                            @Override
+                            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+
+                                newDate.set(year,month,dayOfMonth,hourOfDay,minute,0);
+                                Calendar tem = Calendar.getInstance();
+                                Log.w("TIME",System.currentTimeMillis()+"");
+                                if(newDate.getTimeInMillis()-tem.getTimeInMillis() > 0)
+                                    buttonAlarm.setText(newDate.getTime().toString());
+                                else
+                                    Toast.makeText(DetailActivity.this,"Invalid time",Toast.LENGTH_SHORT).show();
+
+                            }
+                        },newTime.get(Calendar.HOUR_OF_DAY),newTime.get(Calendar.MINUTE),true);
+                        time.show();
+
+                    }
+                },newCalender.get(Calendar.YEAR),newCalender.get(Calendar.MONTH),newCalender.get(Calendar.DAY_OF_MONTH));
+
+                dialog.getDatePicker().setMinDate(System.currentTimeMillis());
+                dialog.show();
             }
         });
     }

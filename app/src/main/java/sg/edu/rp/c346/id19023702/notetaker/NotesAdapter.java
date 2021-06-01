@@ -39,10 +39,12 @@ public class NotesAdapter extends ArrayAdapter<Note> {
         // Initialize layout elements.
         TextView textViewTitle = convertView.findViewById(R.id.text_view_title);
         TextView textViewDescription = convertView.findViewById(R.id.text_view_description);
+        TextView textViewTime = convertView.findViewById(R.id.text_view_time);
 
         // Set text as attributes of the note object.
         textViewTitle.setText(note.getTitle());
         textViewDescription.setText(note.getDescription());
+        textViewTime.setText(note.getTime());
 
         return convertView;
     }

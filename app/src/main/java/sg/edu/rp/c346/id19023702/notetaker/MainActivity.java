@@ -18,6 +18,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 
 /**
@@ -41,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String INTENT_EXTRA_KEY = "KEY";
     public static final String INTENT_EXTRA_TITLE = "TITLE";
     public static final String INTENT_EXTRA_DESCRIPTION = "DESCRIPTION";
+    public static final String INTENT_EXTRA_TIME = "TIME";
 
     // Shared preference constants.
     public static final String SHARED_PREFERENCES_FILE_NAME = "SHARED_PREFERENCES";
@@ -93,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra(INTENT_EXTRA_KEY, selectedNote.getKey());
                 intent.putExtra(INTENT_EXTRA_TITLE, selectedNote.getTitle());
                 intent.putExtra(INTENT_EXTRA_DESCRIPTION, selectedNote.getDescription());
+                intent.putExtra(INTENT_EXTRA_TIME, selectedNote.getTime());
 
                 startActivityForResult(intent, REQUEST_MODIFY_NOTE);
             }
@@ -116,8 +119,7 @@ public class MainActivity extends AppCompatActivity {
         if (resultCode == RESULT_SAVE_NOTE) {
             if (requestCode == REQUEST_MODIFY_NOTE)
                 deleteNote(data.getLongExtra(INTENT_EXTRA_KEY, -1));
-
-            addNote(data.getStringExtra(INTENT_EXTRA_TITLE), data.getStringExtra(INTENT_EXTRA_DESCRIPTION));
+            addNote(data.getStringExtra(INTENT_EXTRA_TITLE), data.getStringExtra(INTENT_EXTRA_DESCRIPTION), data.getStringExtra(INTENT_EXTRA_TIME));
             notesAdapter.notifyDataSetChanged();
         }
 
@@ -147,11 +149,12 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void addNote(String title, String description) {
+    public void addNote(String title, String description, String time) {
         notes.add(new sg.edu.rp.c346.id19023702.notetaker.Note(
                 System.currentTimeMillis(),
                 title,
-                description
+                description,
+                time
         ));
     }
 
