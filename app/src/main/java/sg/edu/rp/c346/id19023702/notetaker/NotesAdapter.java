@@ -14,8 +14,15 @@ import java.util.ArrayList;
 
 public class NotesAdapter extends ArrayAdapter<Note> {
 
-    public NotesAdapter(@NonNull Context context, @NonNull ArrayList<Note> notes) {
-        super(context, 0, notes);
+    private ArrayList<Note> notes;
+    private Context context;
+
+    public NotesAdapter(@NonNull Context context, @NonNull ArrayList<Note> objects) {
+        super(context, 0, objects);
+        // Store the module that is passed to this adapter
+        notes = objects;
+        // Store Context object as we would need to use it later
+        this.context = context;
     }
 
     @NonNull
