@@ -1,5 +1,6 @@
 package sg.edu.rp.c346.id19023702.notetaker;
 
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
