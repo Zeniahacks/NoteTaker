@@ -24,6 +24,8 @@
             android:name=".DetailActivity"
             android:parentActivityName=".MainActivity" />
 
+        <receiver android:name=".AlertReceiver" />
+
     </application>
 
 </manifest>

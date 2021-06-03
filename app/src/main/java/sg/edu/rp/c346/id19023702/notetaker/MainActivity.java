@@ -1,8 +1,11 @@
 package sg.edu.rp.c346.id19023702.notetaker;
 
+import android.app.Dialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,6 +21,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 
@@ -101,7 +105,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
     /**
      * Is called when the activity leaves the foreground. It calls saveNotesToSharedPreferences(),
      * to save the current state of the array list to shared preferences.
